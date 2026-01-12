@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-slate-950 text-slate-50 antialiased;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.bg-glass {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500;
+}
