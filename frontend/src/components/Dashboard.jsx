@@ -17,8 +17,8 @@ const Dashboard = ({ userData }) => {
                 // In a real app, userId would come from auth context
                 const userId = '00000000-0000-0000-0000-000000000000'; // Placeholder
                 const [nutritionRes, weightRes] = await Promise.all([
-                    axios.get(`http://localhost:3000/api/nutrition/summary/${userId}`),
-                    axios.get(`http://localhost:3000/api/weight/history/${userId}`)
+                    axios.get(`${API_URL}/api/nutrition/summary/${userId}`),
+                    axios.get(`${API_URL}/api/weight/history/${userId}`)
                 ]);
                 setNutritionData(nutritionRes.data);
                 setWeightHistory(weightRes.data.length > 0 ? weightRes.data : [
