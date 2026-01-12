@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { Activity, Utensils, Zap, Scale, Loader2 } from 'lucide-react';
 import axios from 'axios';
+import API_URL from '../config';
 
 const Dashboard = ({ userData }) => {
     const [loading, setLoading] = React.useState(true);
