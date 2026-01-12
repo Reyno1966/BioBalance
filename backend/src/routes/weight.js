@@ -1,5 +1,5 @@
 import express from 'express';
-import { query } from '../config/db.js';
+import { supabase } from '../config/supabase.js';
 
 const router = express.Router();
 
@@ -7,42 +7,56 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const { userId, weight } = req.body;
     try {
-        const result = await query(
-            'INSERT INTO weight_logs (user_id, weight) VALUES ($1, $2) RETURNING *',
-            [userId, weight]
-        );
-        res.json(result.rows[0]);
+        const { data, error } = await supabase
+            .from('weight_logs')
+            .insert({ user_id: userId, weight })
+            .select();
+
+        if (error) throw error;
+        res.json(data[0]);
     } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(err);
+        res.status(500).json({ error: err.message });
     }
 });
 
 // Get weight logs
 router.get('/:userId', async (req, res) => {
     try {
-        const result = await query(
-            'SELECT * FROM weight_logs WHERE user_id = $1 ORDER BY recorded_at DESC',
-            [req.params.userId]
-        );
-        res.json(result.rows);
+        const { data, error } = await supabase
+            .from('weight_logs')
+            .select('*')
+            .eq('user_id', req.params.userId)
+            .order('recorded_at', { ascending: false });
+
+        if (error) throw error;
+        res.json(data);
     } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(err);
+        res.status(500).json({ error: err.message });
     }
 });
 
 // Get weight history
 router.get('/history/:userId', async (req, res) => {
     try {
-        const text = 'SELECT weight, recorded_at as date FROM weight_logs WHERE user_id = $1 ORDER BY recorded_at ASC';
-        const result = await query(text, [req.params.userId]);
+        const { data, error } = await supabase
+            .from('weight_logs')
+            .select('weight, recorded_at')
+            .eq('user_id', req.params.userId)
+            .order('recorded_at', { ascending: true });
+
+        if (error) throw error;
+
         // Format dates for chart
-        const formatted = result.rows.map(row => ({
-            ...row,
-            date: new Date(row.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+        const formatted = data.map(row => ({
+            weight: row.weight,
+            date: new Date(row.recorded_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
         }));
         res.json(formatted);
     } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(err);
+        res.status(500).json({ error: err.message });
     }
 });
 

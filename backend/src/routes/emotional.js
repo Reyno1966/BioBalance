@@ -1,5 +1,5 @@
 import express from 'express';
-import { query } from '../config/db.js';
+import { supabase } from '../config/supabase.js';
 
 const router = express.Router();
 
@@ -7,9 +7,12 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const { userId, mood, note } = req.body;
     try {
-        const text = 'INSERT INTO emotional_logs (user_id, mood, note) VALUES ($1, $2, $3) RETURNING *';
-        const values = [userId, mood, note];
-        const result = await query(text, values);
+        const { data, error } = await supabase
+            .from('emotional_logs')
+            .insert({ user_id: userId, mood, note })
+            .select();
+
+        if (error) throw error;
 
         // Simulate reward logic
         const reward = {
@@ -18,23 +21,28 @@ router.post('/', async (req, res) => {
             earned: true
         };
 
-        res.json({ log: result.rows[0], reward });
+        res.json({ log: data[0], reward });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: err.message });
     }
 });
 
 // Get emotional logs
 router.get('/:userId', async (req, res) => {
     try {
-        const result = await query(
-            'SELECT * FROM emotional_logs WHERE user_id = $1 ORDER BY recorded_at DESC LIMIT 10',
-            [req.params.userId]
-        );
-        res.json(result.rows);
+        const { data, error } = await supabase
+            .from('emotional_logs')
+            .select('*')
+            .eq('user_id', req.params.userId)
+            .order('recorded_at', { ascending: false })
+            .limit(10);
+
+        if (error) throw error;
+        res.json(data);
     } catch (err) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(err);
+        res.status(500).json({ error: err.message });
     }
 });
 
