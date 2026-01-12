@@ -4,22 +4,20 @@ import ImageProcessor from './components/ImageProcessor';
 import Dashboard from './components/Dashboard';
 import EmotionalDiary from './components/EmotionalDiary';
 import Pricing from './components/Pricing';
+import AuthForms from './components/AuthForms';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { LogOut, User as UserIcon } from 'lucide-react';
 
-function App() {
+function AppContent() {
+    const { user, logout } = useAuth();
     const [step, setStep] = useState('onboarding');
-    const [view, setView] = useState('pricing'); // Changed to pricing for demo
+    const [view, setView] = useState('dashboard');
     const [isPremium, setIsPremium] = useState(false);
     const [userData, setUserData] = useState(null);
 
     const handleMedicalSubmit = async (data) => {
-        try {
-            // ... API call logic ...
-            setUserData(data);
-            setStep('tracker');
-            setView('pricing'); // Show pricing after onboarding
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        setUserData(data);
+        setStep('tracker');
     };
 
     const handlePurchase = (premium) => {
@@ -27,62 +25,55 @@ function App() {
         setView('dashboard');
     };
 
+    if (!user) {
+        return <AuthForms />;
+    }
+
     return (
         <div className="min-h-screen bg-slate-950 pb-20">
-            <header className="py-10 text-center">
-                <h1 className="text-5xl font-extrabold tracking-tight">
+            <header className="py-6 px-10 flex justify-between items-center border-b border-white/5 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+                <h1 className="text-3xl font-black tracking-tight">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600">
                         BioBalance
                     </span>
                 </h1>
-                <p className="mt-4 text-slate-400 max-w-lg mx-auto">
-                    Tu camino hacia el equilibrio físico y mental.
-                </p>
+
+                <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-3 bg-slate-900/50 px-4 py-2 rounded-full border border-white/5">
+                        <UserIcon className="w-4 h-4 text-cyan-400" />
+                        <span className="text-sm font-bold text-slate-200">{user.displayName || user.email}</span>
+                    </div>
+                    <button
+                        onClick={() => logout()}
+                        className="p-2 hover:bg-red-500/10 rounded-full text-slate-500 hover:text-red-400 transition-all"
+                        title="Cerrar Sesión"
+                    >
+                        <LogOut className="w-5 h-5" />
+                    </button>
+                </div>
             </header>
 
-            <main className="container mx-auto px-4">
+            <main className="container mx-auto px-4 mt-8">
                 {step === 'onboarding' ? (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
                         <MedicalForm onSubmit={handleMedicalSubmit} />
                     </div>
                 ) : (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000 space-y-12">
-                        <div className="bg-cyan-900/10 border border-cyan-500/20 p-6 rounded-2xl max-w-4xl mx-auto flex items-center justify-between">
-                            <div>
-                                <h3 className="text-xl font-bold text-cyan-400">Bienvenido de nuevo</h3>
-                                <p className="text-slate-400 text-sm">Tu perfil de riesgo es:
-                                    <span className={`ml-2 font-mono ${userData?.riskProfile === 'high' ? 'text-red-400' : 'text-green-400'}`}>
-                                        {userData?.riskProfile?.toUpperCase()}
-                                    </span>
-                                </p>
-                            </div>
-                            <button
-                                onClick={() => setStep('onboarding')}
-                                className="text-xs hover:text-cyan-400 transition-colors uppercase tracking-widest font-bold"
-                            >
-                                Volver al perfil
-                            </button>
-                        </div>
-
+                        {/* Navigation Tabs */}
                         <div className="flex justify-center space-x-4 mb-8">
-                            <button
-                                onClick={() => setView('dashboard')}
-                                className={`px-6 py-2 rounded-full font-bold transition-all ${view === 'dashboard' ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-900/20' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-                            >
-                                Dashboard
-                            </button>
-                            <button
-                                onClick={() => setView('tracker')}
-                                className={`px-6 py-2 rounded-full font-bold transition-all ${view === 'tracker' ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-900/20' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-                            >
-                                Comparativa
-                            </button>
-                            <button
-                                onClick={() => setView('health')}
-                                className={`px-6 py-2 rounded-full font-bold transition-all ${view === 'health' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-900/20' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-                            >
-                                Salud Mental
-                            </button>
+                            {['dashboard', 'tracker', 'health', 'pricing'].map((v) => (
+                                <button
+                                    key={v}
+                                    onClick={() => setView(v)}
+                                    className={`px-8 py-3 rounded-full font-bold transition-all text-sm uppercase tracking-widest ${view === v
+                                            ? 'bg-gradient-to-r from-cyan-600 to-blue-700 text-white shadow-lg shadow-cyan-900/40 scale-105'
+                                            : 'bg-slate-900/50 text-slate-500 hover:bg-slate-800 hover:text-slate-300'
+                                        }`}
+                                >
+                                    {v === 'dashboard' ? 'Panel' : v === 'tracker' ? 'Progreso' : v === 'health' ? 'Mente' : 'Premium'}
+                                </button>
+                            ))}
                         </div>
 
                         {view === 'pricing' ? (
@@ -95,13 +86,21 @@ function App() {
                             <EmotionalDiary onSubmit={(data) => console.log('Mood Entry:', data)} />
                         )}
 
-                        <section className="max-w-4xl mx-auto text-center py-12">
-                            <p className="text-slate-500 italic">"La constancia es la llave del éxito."</p>
+                        <section className="text-center py-12">
+                            <p className="text-slate-600 italic text-sm">"Tu salud es la mejor inversión."</p>
                         </section>
                     </div>
                 )}
             </main>
         </div>
+    );
+}
+
+function App() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
     );
 }
 
