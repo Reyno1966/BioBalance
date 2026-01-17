@@ -45,7 +45,7 @@ import tuckJumpHolo from '../assets/hologram-tuck-jump.png';
 const ExercisePlanner = ({ user }) => {
     const { t } = useTranslation();
     const [history, setHistory] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false); // Cambiado a false para evitar pantallas blancas
     const [activeExercise, setActiveExercise] = useState(null);
     const [timeLeft, setTimeLeft] = useState(0);
     const [isActive, setIsActive] = useState(false);
@@ -57,8 +57,8 @@ const ExercisePlanner = ({ user }) => {
     // Helper to get the correct hologram based on exercise title and metadata
     const getPoseHologram = (exercise) => {
         if (!exercise) return bioAvatar;
-        const title = exercise.title.toLowerCase();
-        const focus = exercise.focus?.toLowerCase() || '';
+        const title = (exercise.title || '').toLowerCase();
+        const focus = (exercise.focus || '').toLowerCase();
 
         // 1. Title Based Logic
         if (title.includes('pistol') || (title.includes('sentadilla') && title.includes('pistola'))) return pistolHolo;

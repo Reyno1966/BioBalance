@@ -81,7 +81,7 @@ const AIAssistantBubble = ({ user, context = 'general' }) => {
     };
 
     return (
-        <div className="fixed bottom-32 right-10 z-[100]">
+        <div className="fixed bottom-8 right-8 z-[999]">
             {/* Chat Window */}
             {isOpen && (
                 <div className="absolute bottom-20 right-0 w-[400px] h-[600px] bg-slate-950/95 backdrop-blur-3xl border border-white/10 rounded-[3rem] shadow-[0_0_80px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 duration-500">
@@ -122,8 +122,8 @@ const AIAssistantBubble = ({ user, context = 'general' }) => {
                                     {msg.role === 'user' ? <Sparkles className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-cyan-400" />}
                                 </div>
                                 <div className={`px-6 py-4 rounded-[1.8rem] text-sm font-medium ${msg.role === 'user'
-                                        ? 'bg-cyan-600/10 border border-cyan-500/30 text-white'
-                                        : 'bg-slate-900 border border-white/5 text-slate-300'
+                                    ? 'bg-cyan-600/10 border border-cyan-500/30 text-white'
+                                    : 'bg-slate-900 border border-white/5 text-slate-300'
                                     }`}>
                                     {msg.content}
                                 </div>

@@ -259,10 +259,10 @@ function AppContent() {
             <AIAssistantBubble
                 user={activeUser}
                 context={
-                    view === 'food' ? 'nutrition' :
-                        view === 'exercise' ? 'exercise' :
+                    view === 'food' || view === 'recipes' ? 'nutrition' :
+                        view === 'exercise' || view === 'challenges' ? 'exercise' :
                             view === 'recovery' ? 'sleep' :
-                                view === 'health' ? 'mind' : 'general'
+                                view === 'health' || view === 'academy' ? 'mind' : 'general'
                 }
             />
 
