@@ -45,115 +45,94 @@ import tuckJumpHolo from '../assets/hologram-tuck-jump.png';
 const ExercisePlanner = ({ user }) => {
     const { t } = useTranslation();
     const [history, setHistory] = useState([]);
-    const [loading, setLoading] = useState(false); // Siempre false para evitar esperas
+    const [loading, setLoading] = useState(false);
     const [activeExercise, setActiveExercise] = useState(null);
     const [timeLeft, setTimeLeft] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [completedExercises, setCompletedExercises] = useState([]);
-    const [saving, setSaving] = useState(false);
-    const [simulatorMode, setSimulatorMode] = useState('duo');
     const [selectedCategory, setSelectedCategory] = useState('bodyweight');
 
     const getPoseHologram = (exercise) => {
         if (!exercise) return bioAvatar;
         const title = (exercise.title || '').toLowerCase();
-        const focus = (exercise.focus || '').toLowerCase();
-
         if (title.includes('pistol')) return pistolHolo;
         if (title.includes('burpee')) return burpeeHolo;
         if (title.includes('escalador') || title.includes('climber')) return climberHolo;
         if (title.includes('fondo') || title.includes('dips')) return dipsHolo;
         if (title.includes('arquera') || title.includes('archer')) return archerHolo;
         if (title.includes('oso') || title.includes('bear')) return bearHolo;
-        if (title.includes('plancha lateral') || title.includes('side plank')) return sidePlankHolo;
+        if (title.includes('lateral')) return sidePlankHolo;
         if (title.includes('pica') || title.includes('pike')) return pikeHolo;
-        if (title.includes('zancada de poder') || title.includes('power lunge')) return powerLungeHolo;
+        if (title.includes('zancada') || title.includes('power')) return powerLungeHolo;
         if (title.includes('superman')) return supermanHolo;
-        if (title.includes('puente') || title.includes('glute bridge')) return bridgeHolo;
-        if (title.includes('wall sit') || title.includes('pared')) return wallSitHolo;
-        if (title.includes('diamante') || title.includes('diamond')) return diamondHolo;
-        if (title.includes('prisionero') || title.includes('prisoner')) return prisonerHolo;
-        if (title.includes('comando') || title.includes('up-down')) return commandoHolo;
-        if (title.includes('estocada lateral') || title.includes('lateral lunge')) return lateralLungeHolo;
-        if (title.includes('rodilla al pecho') || title.includes('tuck jump')) return tuckJumpHolo;
+        if (title.includes('puente')) return bridgeHolo;
+        if (title.includes('pared')) return wallSitHolo;
+        if (title.includes('diamante')) return diamondHolo;
+        if (title.includes('prisionero')) return prisonerHolo;
+        if (title.includes('comando')) return commandoHolo;
+        if (title.includes('rodilla') || title.includes('tuck')) return tuckJumpHolo;
         if (title.includes('flexión') || title.includes('push')) return pushupHolo;
-        if (title.includes('sentadilla') || title.includes('squat') || title.includes('zancada')) return squatHolo;
-        if (title.includes('meditación') || title.includes('respiración') || title.includes('zen')) return lotusHolo;
-
+        if (title.includes('sentadilla') || title.includes('squat')) return squatHolo;
+        if (title.includes('hollow')) return hollowHolo;
+        if (title.includes('navaja')) return navajaHolo;
+        if (title.includes('l-sit')) return lsitHolo;
+        if (title.includes('medita') || title.includes('zen')) return lotusHolo;
         if (selectedCategory === 'weights') return benchHolo;
         if (selectedCategory === 'zen') return lotusHolo;
-        if (title.includes('plancha') || focus.includes('core')) return plankHolo;
-
         return bioAvatar;
     };
 
     const exerciseData = {
         bodyweight: [
-            { id: 'bw-1', title: 'Sentadilla Pistola (Pistol)', focus: 'Tren Inferior', difficulty: 'Élite', desc: 'Equilibrio y fuerza unimodal.' },
-            { id: 'bw-2', title: 'Flexiones Arqueras', focus: 'Pectoral/Tríceps', difficulty: 'Alta', desc: 'Distribución asimétrica de carga.' },
-            { id: 'bw-3', title: 'Plancha Lateral con Rotación', focus: 'Core/Oblicuos', difficulty: 'Media', desc: 'Estabilidad rotacional.' },
-            { id: 'bw-4', title: 'Hollow Body Rock', focus: 'Core Profundo', difficulty: 'Alta', desc: 'Activación cadena anterior.' },
-            { id: 'bw-5', title: 'Burpee con Salto Térmico', focus: 'Cardio-Sistémico', difficulty: 'Máxima', desc: 'Protocolo de alta demanda.' },
-            { id: 'bw-6', title: 'Escaladores Cruzados', focus: 'Abdominal/Hombros', difficulty: 'Media', desc: 'Movilidad dinámica.' },
-            { id: 'bw-7', title: 'Fondos en Paralelas (Body)', focus: 'Tríceps/Pecho', difficulty: 'Alta', desc: 'Extensión forzada.' },
-            { id: 'bw-8', title: 'Paso del Oso (Bear Crawl)', focus: 'Full Body', difficulty: 'Media', desc: 'Coordinación cuadrúpeda.' },
-            { id: 'bw-9', title: 'Flexiones en Pica (Pike)', focus: 'Deltoides', difficulty: 'Alta', desc: 'Empuje vertical.' },
-            { id: 'bw-10', title: 'Zancadas de Poder (Pliométrico)', focus: 'Tren Inferior', difficulty: 'Máxima', desc: 'Explosividad de fibras IIb.' },
-            { id: 'bw-11', title: 'Superman Isométrico', focus: 'Erectores Espinales', difficulty: 'Baja', desc: 'Optimización de postura.' },
-            { id: 'bw-12', title: 'Puente de Glúteo Unilateral', focus: 'Glúteo/Isquios', difficulty: 'Media', desc: 'Aislamiento de potencia.' },
-            { id: 'bw-13', title: 'Wall Sit con Adducción', focus: 'Cuádriceps', difficulty: 'Media', desc: 'Resistencia isométrica.' },
-            { id: 'bw-14', title: 'Abdominales V-Sit (Navaja)', focus: 'Recto Abdominal', difficulty: 'Alta', desc: 'Compresión máxima.' },
-            { id: 'bw-15', title: 'Flexiones Diamante', focus: 'Tríceps Braquial', difficulty: 'Media', desc: 'Enfoque biomecánico.' },
-            { id: 'bw-16', title: 'Sentadilla de Prisionero', focus: 'Cadena Posterior', difficulty: 'Baja', desc: 'Corrección postural.' },
-            { id: 'bw-17', title: 'Plancha Comando (Up-Downs)', focus: 'Hombros/Core', difficulty: 'Alta', desc: 'Transición dinámica.' },
+            { id: 'bw-1', title: 'Sentadilla Pistola (Pistol)', focus: 'Tren Inferior', difficulty: 'Élite', desc: 'Fuerza unimodal.' },
+            { id: 'bw-2', title: 'Flexiones Arqueras', focus: 'Pectoral', difficulty: 'Alta', desc: 'Distribución asimétrica.' },
+            { id: 'bw-3', title: 'Plancha Lateral', focus: 'Core', difficulty: 'Media', desc: 'Estabilidad.' },
+            { id: 'bw-4', title: 'Hollow Body Rock', focus: 'Core Profundo', difficulty: 'Alta', desc: 'Activación anterior.' },
+            { id: 'bw-5', title: 'Burpee con Salto', focus: 'Metabólico', difficulty: 'Máxima', desc: 'Alta demanda.' },
+            { id: 'bw-6', title: 'Escaladores', focus: 'Cardio', difficulty: 'Media', desc: 'Movilidad.' },
+            { id: 'bw-7', title: 'Fondos en Paralelas', focus: 'Tríceps', difficulty: 'Alta', desc: 'Extensión forzada.' },
+            { id: 'bw-8', title: 'Paso del Oso', focus: 'Full Body', difficulty: 'Media', desc: 'Coordinación.' },
+            { id: 'bw-9', title: 'Flexiones en Pica', focus: 'Hombros', difficulty: 'Alta', desc: 'Empuje vertical.' },
+            { id: 'bw-10', title: 'Zancadas de Poder', focus: 'Explosividad', difficulty: 'Máxima', desc: 'Potencia.' },
+            { id: 'bw-11', title: 'Superman Isométrico', focus: 'Espalda', difficulty: 'Baja', desc: 'Postural.' },
+            { id: 'bw-12', title: 'Puente de Glúteo', focus: 'Glúteo', difficulty: 'Media', desc: 'Aislamiento.' },
+            { id: 'bw-13', title: 'Wall Sit', focus: 'Cuádriceps', difficulty: 'Media', desc: 'Resistencia.' },
+            { id: 'bw-14', title: 'Abdominales Navaja', focus: 'Core', difficulty: 'Alta', desc: 'Compresión.' },
+            { id: 'bw-15', title: 'Flexiones Diamante', focus: 'Tríceps', difficulty: 'Media', desc: 'Aislamiento.' },
+            { id: 'bw-16', title: 'Sentadilla de Prisionero', focus: 'Postural', difficulty: 'Baja', desc: 'Corrección.' },
+            { id: 'bw-17', title: 'Plancha Comando', focus: 'Hombros/Core', difficulty: 'Alta', desc: 'Dinámico.' },
             { id: 'bw-18', title: 'Estocadas Laterales', focus: 'Aductores', difficulty: 'Media', desc: 'Plano frontal.' },
-            { id: 'bw-19', title: 'L-Sit Progressions', focus: 'Flexores/Core', difficulty: 'Élite', desc: 'Soporte isométrico.' },
-            { id: 'bw-20', title: 'Saltos de Rodilla al Pecho', focus: 'Potencia Explosiva', difficulty: 'Máxima', desc: 'Impacto reactivo.' }
+            { id: 'bw-19', title: 'L-Sit Progressions', focus: 'Core Élite', difficulty: 'Élite', desc: 'Tensión máxima.' },
+            { id: 'bw-20', title: 'Saltos de Rodilla', focus: 'Potencia', difficulty: 'Máxima', desc: 'Reactivo.' }
         ],
         weights: [
-            { id: 'w-1', title: 'Press de Banca Bio-Force', focus: 'Pectoral Mayor', difficulty: 'Alta', desc: 'Tensión mecánica pura.' },
-            { id: 'w-2', title: 'Peso Muerto Rumano', focus: 'Cadena Posterior', difficulty: 'Alta', desc: 'Estiramiento bajo carga.' },
-            { id: 'w-3', title: 'Press Militar (Barra)', focus: 'Hombros', difficulty: 'Alta', desc: 'Empuje vertical técnico.' },
-            { id: 'w-4', title: 'Sentadilla Frontal (Carga)', focus: 'Cuádriceps', difficulty: 'Élite', desc: 'Estabilidad vertical.' },
-            { id: 'w-5', title: 'Remo con Mancuerna', focus: 'Dorsal Ancho', difficulty: 'Media', desc: 'Tracción unilateral.' },
-            { id: 'w-6', title: 'Curl Martillo Constante', focus: 'Braquial/Bíceps', difficulty: 'Media', desc: 'Carga de tensión.' },
-            { id: 'w-7', title: 'Extensiones Tríceps Trasnuca', focus: 'Tríceps Cabeza Larga', difficulty: 'Media', desc: 'Estiramiento máximo.' },
-            { id: 'w-10', title: 'Face Pulls Neuronal', focus: 'Delt. Posterior', difficulty: 'Baja', desc: 'Salud escapular.' },
-            { id: 'w-19', title: 'Kettlebell Swings', focus: 'Cadera Explosiva', difficulty: 'Alta', desc: 'Hip drive dinámico.' },
-            { id: 'w-20', title: 'Press Francés', focus: 'Tríceps aislados', difficulty: 'Media', desc: 'Flexión técnica.' }
+            { id: 'w-1', title: 'Press de Banca Bio-Force', focus: 'Pecho', difficulty: 'Alta', desc: 'Fuerza pura.' },
+            { id: 'w-2', title: 'Peso Muerto Rumano', focus: 'Espalda', difficulty: 'Alta', desc: 'Cadena posterior.' },
+            { id: 'w-3', title: 'Press Militar', focus: 'Hombros', difficulty: 'Alta', desc: 'Empuje vertical.' },
+            { id: 'w-4', title: 'Sentadilla Frontal', focus: 'Cuádriceps', difficulty: 'Élite', desc: 'Verticalidad.' },
+            { id: 'w-5', title: 'Remo con Mancuerna', focus: 'Dorsal', difficulty: 'Media', desc: 'Simetría.' },
+            { id: 'w-6', title: 'Curl Martillo', focus: 'Bíceps', difficulty: 'Media', desc: 'Carga constante.' },
+            { id: 'w-7', title: 'Extensiones Tríceps', focus: 'Tríceps', difficulty: 'Media', desc: 'Estiramiento.' },
+            { id: 'w-8', title: 'Press Inclinado', focus: 'Pecho Superior', difficulty: 'Alta', desc: 'Ángulo superior.' },
+            { id: 'w-9', title: 'Goblet Squat', focus: 'Piernas', difficulty: 'Media', desc: 'Apertura cadera.' },
+            { id: 'w-10', title: 'Face Pulls', focus: 'Hombro Post.', difficulty: 'Baja', desc: 'Salud escapular.' }
         ],
         zen: [
-            { id: 'z-1', title: 'Respiración de Caja 4-4-4', focus: 'Nervio Vago', difficulty: 'Baja', desc: 'Reset del sistema nervioso.' },
-            { id: 'z-2', title: 'Coherencia Cardiaca', focus: 'Corazón/Cerebro', difficulty: 'Media', desc: 'Sincronización rítmica.' },
-            { id: 'z-3', title: 'Escaneo Corporal REM', focus: 'Recuperación Somática', difficulty: 'Baja', desc: 'Inducción al sueño.' },
-            { id: 'z-5', title: 'Yoga Nidra', focus: 'Descanso Celular', difficulty: 'Alta', desc: 'Relajación theta.' },
-            { id: 'z-9', title: 'Estiramiento Cobra', focus: 'Cadena Anterior', difficulty: 'Baja', desc: 'Apertura de caja torácica.' },
-            { id: 'z-16', title: 'Zen Zazen (Vacío)', focus: 'Silencio Neural', difficulty: 'Élite', desc: 'Mente en no-pensamiento.' }
+            { id: 'z-1', title: 'Respiración de Caja 4-4-4', focus: 'Nervios', difficulty: 'Baja', desc: 'Reset neural.' },
+            { id: 'z-2', title: 'Coherencia Cardiaca', focus: 'Corazón', difficulty: 'Media', desc: 'Sincronización.' },
+            { id: 'z-3', title: 'Escaneo Corporal REM', focus: 'Sueño', difficulty: 'Baja', desc: 'Relajación.' },
+            { id: 'z-4', title: 'Meditación Trataka', focus: 'Foco', difficulty: 'Media', desc: 'Atención visual.' },
+            { id: 'z-5', title: 'Yoga Nidra', focus: 'Descanso Celular', difficulty: 'Alta', desc: 'Estado theta.' },
+            { id: 'z-6', title: 'Estiramiento Cobra', focus: 'Caja Torácica', difficulty: 'Baja', desc: 'Apertura.' }
         ]
     };
 
     const handleStartSimulation = (exercise) => {
         setActiveExercise(exercise);
-        setSimulatorMode(selectedCategory === 'weights' ? 'muscle' : 'duo');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        const baseDuration = exercise.id.includes('z') ? 300 : exercise.id.includes('w') ? 90 : 45;
-        setTimeLeft(baseDuration);
+        setTimeLeft(exercise.id.includes('z') ? 300 : 45);
         setIsActive(true);
     };
-
-    const fetchHistory = async () => {
-        try {
-            if (user?.uid === 'guest-123') return;
-            const response = await axios.get(`${API_URL}/api/exercise/history/${user.uid}`);
-            setHistory(response.data);
-        } catch (err) {
-            console.error("Error fetching history:", err);
-        }
-    };
-
-    useEffect(() => {
-        if (user) fetchHistory();
-    }, [user]);
 
     useEffect(() => {
         let interval = null;
@@ -173,94 +152,63 @@ const ExercisePlanner = ({ user }) => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-24 pb-40 px-6 animate-in fade-in duration-1000">
-            {/* Professional 3D Simulator HUD */}
-            <div className="relative h-[700px] w-full bg-slate-950/60 rounded-[5rem] border-2 border-cyan-500/20 overflow-hidden shadow-[0_0_100px_rgba(6,182,212,0.15)]">
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.05] pointer-events-none" />
-
-                <div className="absolute top-12 left-12 z-30 space-y-4">
-                    <div className="bg-slate-900/80 backdrop-blur-3xl p-5 border border-white/10 rounded-3xl flex items-center gap-4">
-                        <div className="p-3 bg-cyan-500/10 rounded-2xl"><Cpu className="w-6 h-6 text-cyan-400" /></div>
-                        <div>
-                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Sistema Bio-Sync</p>
-                            <h4 className="text-white font-black text-xs uppercase italic">Hologram_ACTIVE</h4>
-                        </div>
-                    </div>
+        <div className="max-w-7xl mx-auto space-y-16 pb-40 px-6 animate-in fade-in duration-1000">
+            {/* Visual Simulator */}
+            <div className="relative h-[600px] w-full bg-slate-900/60 rounded-[4rem] border-2 border-cyan-500/20 overflow-hidden shadow-2xl">
+                <div className="absolute top-8 left-8 z-30 flex items-center gap-3 bg-slate-950/80 p-4 rounded-2xl border border-white/10">
+                    <Cpu className="w-5 h-5 text-cyan-400" />
+                    <span className="text-[10px] font-black text-white uppercase italic">Bio_Scanner_Active</span>
                 </div>
 
-                {/* Main Visualizer */}
-                <div className="absolute inset-0 flex items-center justify-center p-20 z-10">
-                    <div className="relative h-full w-full flex items-center justify-center">
-                        <div className="absolute bottom-0 w-[800px] h-32 bg-cyan-500/10 blur-[100px] rounded-full" />
-                        <img
-                            src={getPoseHologram(activeExercise)}
-                            alt="Hologram"
-                            className="h-full object-contain mix-blend-screen animate-in zoom-in duration-700 drop-shadow-[0_0_50px_rgba(6,182,212,0.4)]"
-                        />
-                    </div>
+                <div className="absolute inset-0 flex items-center justify-center p-10">
+                    <img src={getPoseHologram(activeExercise)} alt="Simulation" className="h-full object-contain mix-blend-screen drop-shadow-[0_0_40px_rgba(6,182,212,0.4)]" />
                 </div>
 
-                {/* HUD Controls */}
-                <div className="absolute bottom-0 left-0 right-0 p-12 bg-gradient-to-t from-slate-950 to-transparent z-40">
-                    <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 items-center gap-12">
-                        <div className="flex items-center gap-8">
-                            <button onClick={() => setIsActive(!isActive)} className="p-6 bg-cyan-600 rounded-[2.5rem] shadow-[0_0_30px_rgba(6,182,212,0.5)]">
-                                {isActive ? <Pause className="w-10 h-10 text-slate-950 fill-current" /> : <Play className="w-10 h-10 text-slate-950 fill-current" />}
+                <div className="absolute bottom-0 inset-x-0 p-10 bg-gradient-to-t from-slate-950 to-transparent">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                        <div className="flex items-center gap-6">
+                            <button onClick={() => setIsActive(!isActive)} className="p-6 bg-cyan-600 rounded-full shadow-lg shadow-cyan-500/20">
+                                {isActive ? <Pause className="text-slate-950" /> : <Play className="text-slate-950" />}
                             </button>
                             <div>
-                                <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter truncate max-w-[250px]">
-                                    {activeExercise?.title || 'ESCANEO PENDIENTE'}
-                                </h3>
-                                <p className="text-cyan-500/60 font-black text-[10px] uppercase tracking-[0.4em] mt-1">Status: Ready</p>
+                                <h3 className="text-2xl font-black text-white italic uppercase">{activeExercise?.title || 'SELECCIONA EJERCICIO'}</h3>
+                                <p className="text-cyan-500/50 text-[9px] font-bold uppercase tracking-[0.3em]">Status: Ready for Sync</p>
                             </div>
                         </div>
-
-                        <div className="text-center">
-                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] mb-4">Reloj Bio-Cronometrado</p>
-                            <div className="text-6xl font-mono font-black text-white leading-none tracking-tighter">
-                                {formatTime(timeLeft)}
-                            </div>
-                        </div>
-
-                        <div className="flex justify-end gap-5">
-                            <button onClick={() => setTimeLeft(prev => prev + 30)} className="p-4 bg-white/5 border border-white/10 rounded-2xl text-white text-[10px] font-black uppercase">+30s</button>
-                            <button onClick={() => setTimeLeft(0)} className="p-4 bg-white/5 border border-white/10 rounded-2xl text-white text-[10px] font-black uppercase">Terminar</button>
-                        </div>
+                        <div className="text-5xl font-mono font-black text-white tracking-tighter">{formatTime(timeLeft)}</div>
                     </div>
                 </div>
             </div>
 
-            {/* Library Section */}
-            <div className="space-y-16">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
-                    <div className="space-y-4">
-                        <h2 className="text-6xl font-black text-white italic tracking-tighter uppercase leading-none">Bio-Library</h2>
-                        <div className="flex bg-slate-900/60 p-2 rounded-[3.5rem] border border-white/10 gap-2">
-                            {['bodyweight', 'weights', 'zen'].map(cat => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setSelectedCategory(cat)}
-                                    className={`px-10 py-5 rounded-[2.5rem] text-[10px] font-black uppercase tracking-widest transition-all ${selectedCategory === cat ? 'bg-cyan-600 text-white' : 'text-slate-500'}`}
-                                >
-                                    {cat === 'bodyweight' ? 'Sin Pesas' : cat === 'weights' ? 'Con Pesas' : 'Zen'}
-                                </button>
-                            ))}
-                        </div>
+            {/* Diversity Library */}
+            <div className="space-y-12">
+                <div className="flex justify-between items-end border-b border-white/5 pb-8">
+                    <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Bio-Library</h2>
+                    <div className="flex bg-slate-900/80 p-1 rounded-full border border-white/10">
+                        {['bodyweight', 'weights', 'zen'].map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-8 py-3 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${selectedCategory === cat ? 'bg-cyan-600 text-white' : 'text-slate-500'}`}
+                            >
+                                {cat === 'bodyweight' ? 'Sin Pesas' : cat === 'weights' ? 'Con Pesas' : 'Zen'}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {exerciseData[selectedCategory].map((exercise) => (
                         <div
                             key={exercise.id}
                             onClick={() => handleStartSimulation(exercise)}
-                            className={`p-6 bg-slate-900/40 rounded-[3.5rem] border-2 transition-all cursor-pointer group ${activeExercise?.id === exercise.id ? 'border-cyan-500 bg-cyan-500/10' : 'border-white/5'}`}
+                            className={`p-6 rounded-[3rem] border-2 transition-all cursor-pointer group ${activeExercise?.id === exercise.id ? 'border-cyan-500 bg-cyan-500/10' : 'bg-slate-900/40 border-white/5 hover:border-white/20'}`}
                         >
-                            <div className="aspect-square bg-slate-950/50 rounded-[2.5rem] overflow-hidden mb-6 flex items-center justify-center">
-                                <img src={getPoseHologram(exercise)} className="h-4/5 object-contain mix-blend-screen group-hover:scale-110 transition-transform" />
+                            <div className="aspect-square bg-slate-950/60 rounded-[2rem] flex items-center justify-center mb-6 overflow-hidden">
+                                <img src={getPoseHologram(exercise)} className="h-3/4 object-contain mix-blend-screen group-hover:scale-110 transition-transform" />
                             </div>
-                            <h4 className="text-xl font-black text-white italic uppercase">{exercise.title}</h4>
-                            <p className="text-[10px] text-slate-500 font-bold uppercase mt-2">{exercise.focus}</p>
+                            <h4 className="text-lg font-black text-white italic uppercase group-hover:text-cyan-400 transition-colors">{exercise.title}</h4>
+                            <p className="text-[9px] text-slate-500 font-bold uppercase mt-1">{exercise.focus}</p>
                         </div>
                     ))}
                 </div>
