@@ -30,9 +30,18 @@ export const initDB = async () => {
     try {
         const schemaPath = path.join(__dirname, '../../../docs/schema.sql');
         const schema = fs.readFileSync(schemaPath, 'utf8');
-        await query(schema);
-        console.log('✅ Database schema initialized');
+
+        // Split by semicolon but ignore ones inside quotes or comments if possible
+        // For a simple schema, splitting by semicolon and filtering empty strings works
+        const statements = schema.split(';').map(s => s.trim()).filter(s => s.length > 0);
+
+        for (const statement of statements) {
+            await query(statement);
+        }
+
+        console.log('✅ Database schema and badges initialized');
     } catch (err) {
+
         console.error('❌ Error initializing database:', err);
     }
 };

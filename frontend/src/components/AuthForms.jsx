@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { LogIn, UserPlus, Mail, Lock, User, Loader2, AlertCircle } from 'lucide-react';
 
-const AuthForms = () => {
+const AuthForms = ({ onGuestLogin }) => {
     const [isLogin, setIsLogin] = useState(true);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -110,6 +110,20 @@ const AuthForms = () => {
                                 <span>Registrarme</span>
                             </>
                         )}
+                    </button>
+
+                    <div className="flex items-center space-x-4">
+                        <div className="flex-1 h-px bg-white/5"></div>
+                        <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">O continúa con</span>
+                        <div className="flex-1 h-px bg-white/5"></div>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={onGuestLogin}
+                        className="w-full py-3 bg-slate-900 hover:bg-slate-800 border border-white/5 rounded-2xl font-bold text-sm transition-all"
+                    >
+                        Acceder como Invitado (Modo Demo)
                     </button>
                 </form>
 

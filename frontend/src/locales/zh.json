@@ -1,0 +1,29 @@
+{
+    "common": {
+        "dashboard": "仪表板",
+        "nutrition": "营养",
+        "exercise": "锻炼",
+        "challenges": "挑战",
+        "recipes": "食谱",
+        "academy": "学院",
+        "chat": "AI 聊天",
+        "sleep": "睡眠",
+        "mind": "心理",
+        "community": "社区",
+        "market": "商店",
+        "premium": "高级版",
+        "logout": "退出登录",
+        "welcome": "你好, {{name}}!",
+        "health_investment": "\"健康是最好的投资。\""
+    },
+    "dashboard": {
+        "hologram_view": "全息视图",
+        "generate_report": "生成报告",
+        "daily_steps": "每日步数",
+        "heart_rate": "心率",
+        "hydration": "补水",
+        "bpm": "次/分",
+        "level": "等级",
+        "total_points": "总积分"
+    }
+}

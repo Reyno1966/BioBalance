@@ -1,0 +1,35 @@
+{
+    "common": {
+        "dashboard": "Panel",
+        "nutrition": "Nutrición",
+        "exercise": "Entrenar",
+        "challenges": "Retos",
+        "recipes": "Recetas",
+        "academy": "Academy",
+        "chat": "Chat AI",
+        "sleep": "Sueño",
+        "mind": "Mente",
+        "community": "Comunidad",
+        "market": "Tienda",
+        "premium": "Premium",
+        "logout": "Cerrar Sesión",
+        "welcome": "¡Hola, {{name}}!",
+        "health_investment": "\"Tu salud es la mejor inversión.\""
+    },
+    "dashboard": {
+        "hologram_view": "Vista Holograma",
+        "generate_report": "Generar Reporte",
+        "daily_steps": "Pasos Diarios",
+        "heart_rate": "Ritmo Cardíaco",
+        "hydration": "Hidratación",
+        "bpm": "BPM",
+        "level": "Nivel",
+        "total_points": "PTS TOTALES",
+        "bio_macros": "Bio-Macros",
+        "balance": "Balance",
+        "energy_expenditure": "Gasto Energético",
+        "basal_metabolism": "Metabolismo",
+        "goal": "Meta",
+        "logs_synced": "Sincronizado"
+    }
+}

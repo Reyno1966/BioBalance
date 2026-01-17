@@ -1,14 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// TODO: Remplazar con tus credenciales de Firebase
+// Configuración de Firebase del usuario
 const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_AUTH_DOMAIN",
-    projectId: "TU_PROJECT_ID",
-    storageBucket: "TU_STORAGE_BUCKET",
-    messagingSenderId: "TU_MESSAGING_SENDER_ID",
-    appId: "TU_APP_ID"
+    apiKey: "AIzaSyAgOFDfH-LlUWhdxCgBv63btwf7TMRZMsk",
+    authDomain: "biobalance-3f807.firebaseapp.com",
+    projectId: "biobalance-3f807",
+    storageBucket: "biobalance-3f807.firebasestorage.app",
+    messagingSenderId: "983533198814",
+    appId: "1:983533198814:web:7a2b3ec948e9be1c5ed14f"
 };
 
 const app = initializeApp(firebaseConfig);

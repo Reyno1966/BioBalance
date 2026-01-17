@@ -1,0 +1,35 @@
+{
+    "common": {
+        "dashboard": "Dashboard",
+        "nutrition": "Nutrition",
+        "exercise": "Train",
+        "challenges": "Challenges",
+        "recipes": "Recipes",
+        "academy": "Academy",
+        "chat": "AI Chat",
+        "sleep": "Sleep",
+        "mind": "Mind",
+        "community": "Community",
+        "market": "Market",
+        "premium": "Premium",
+        "logout": "Log Out",
+        "welcome": "Hello, {{name}}!",
+        "health_investment": "\"Your health is the best investment.\""
+    },
+    "dashboard": {
+        "hologram_view": "Hologram View",
+        "generate_report": "Generate Report",
+        "daily_steps": "Daily Steps",
+        "heart_rate": "Heart Rate",
+        "hydration": "Hydration",
+        "bpm": "BPM",
+        "level": "Level",
+        "total_points": "TOTAL PTS",
+        "bio_macros": "Bio-Macros",
+        "balance": "Balance",
+        "energy_expenditure": "Energy Expenditure",
+        "basal_metabolism": "Metabolism",
+        "goal": "Goal",
+        "logs_synced": "Synced"
+    }
+}

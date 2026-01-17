@@ -1,0 +1,29 @@
+{
+    "common": {
+        "dashboard": "Dashboard",
+        "nutrition": "Nutrizione",
+        "exercise": "Allenamento",
+        "challenges": "Sfide",
+        "recipes": "Ricette",
+        "academy": "Academy",
+        "chat": "Chat AI",
+        "sleep": "Sonno",
+        "mind": "Mente",
+        "community": "Comunità",
+        "market": "Negozio",
+        "premium": "Premium",
+        "logout": "Disconnetti",
+        "welcome": "Ciao, {{name}}!",
+        "health_investment": "\"La tua salute è il miglior investimento.\""
+    },
+    "dashboard": {
+        "hologram_view": "Vista Ologramma",
+        "generate_report": "Genera Report",
+        "daily_steps": "Passi Quotidiani",
+        "heart_rate": "Frequenza Cardiaca",
+        "hydration": "Idratazione",
+        "bpm": "BPM",
+        "level": "Livello",
+        "total_points": "PUNTI TOTALI"
+    }
+}

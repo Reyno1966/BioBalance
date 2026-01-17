@@ -1,0 +1,29 @@
+{
+    "common": {
+        "dashboard": "لوحة القيادة",
+        "nutrition": "التغذية",
+        "exercise": "التمرين",
+        "challenges": "التحديات",
+        "recipes": "الوصفات",
+        "academy": "الأكاديمية",
+        "chat": "دردشة الذكاء الاصطناعي",
+        "sleep": "النوم",
+        "mind": "العقل",
+        "community": "المجتمع",
+        "market": "المتجر",
+        "premium": "المميزات الإضافية",
+        "logout": "تسجيل الخروج",
+        "welcome": "مرحباً، {{name}}!",
+        "health_investment": "\"صحتك هي أفضل استثمار لك.\""
+    },
+    "dashboard": {
+        "hologram_view": "عرض الهولوغرام",
+        "generate_report": "إنشاء تقرير",
+        "daily_steps": "الخطوات اليومية",
+        "heart_rate": "معدل ضربات القلب",
+        "hydration": "الترطيب",
+        "bpm": "نبضة/دقيقة",
+        "level": "المستوى",
+        "total_points": "إجمالي النقاط"
+    }
+}

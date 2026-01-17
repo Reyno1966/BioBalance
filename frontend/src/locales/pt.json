@@ -1,0 +1,29 @@
+{
+    "common": {
+        "dashboard": "Painel",
+        "nutrition": "Nutrição",
+        "exercise": "Treinar",
+        "challenges": "Desafios",
+        "recipes": "Receitas",
+        "academy": "Academia",
+        "chat": "Chat AI",
+        "sleep": "Sono",
+        "mind": "Mente",
+        "community": "Comunidade",
+        "market": "Loja",
+        "premium": "Premium",
+        "logout": "Sair",
+        "welcome": "Olá, {{name}}!",
+        "health_investment": "\"Sua saúde é o melhor investimento.\""
+    },
+    "dashboard": {
+        "hologram_view": "Vista Holograma",
+        "generate_report": "Gerar Relatório",
+        "daily_steps": "Passos Diários",
+        "heart_rate": "Ritmo Cardíaco",
+        "hydration": "Hidratação",
+        "bpm": "BPM",
+        "level": "Nível",
+        "total_points": "PONTOS TOTAIS"
+    }
+}

@@ -7,7 +7,15 @@ import medicalRoutes from './routes/medical.js';
 import weightRoutes from './routes/weight.js';
 import nutritionRoutes from './routes/nutrition.js';
 import emotionalRoutes from './routes/emotional.js';
-import { initDB } from './config/db.js';
+import userRoutes from './routes/user.js';
+import exerciseRoutes from './routes/exercise.js';
+import aiRoutes from './routes/ai.js';
+import healthRoutes from './routes/health.js';
+import challengeRoutes from './routes/challenge.js';
+import paymentRoutes from './routes/payment.js';
+
+
+
 
 dotenv.config();
 
@@ -25,12 +33,29 @@ app.use('/api/medical', medicalRoutes);
 app.use('/api/weight', weightRoutes);
 app.use('/api/nutrition', nutritionRoutes);
 app.use('/api/emotional', emotionalRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/exercise', exerciseRoutes);
+app.use('/api/ai', aiRoutes);
+app.use('/api/health', healthRoutes);
+app.use('/api/challenge', challengeRoutes);
+app.use('/api/payment', paymentRoutes);
 
+
+
+
+
+
+// Health check
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', service: 'BioBalance API' });
 });
 
-app.listen(PORT, async () => {
-    await initDB();
-    console.log(`🚀 BioBalance Server running on port ${PORT}`);
-});
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, async () => {
+        // await initDB(); // Uncomment if you want auto-init locally
+        console.log(`🚀 BioBalance Server running locally on port ${PORT}`);
+    });
+}
+
+export default app;

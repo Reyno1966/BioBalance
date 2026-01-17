@@ -1,0 +1,29 @@
+{
+    "common": {
+        "dashboard": "Панель",
+        "nutrition": "Питание",
+        "exercise": "Тренировки",
+        "challenges": "Вызовы",
+        "recipes": "Рецепты",
+        "academy": "Академия",
+        "chat": "ИИ-чат",
+        "sleep": "Сон",
+        "mind": "Разум",
+        "community": "Сообщество",
+        "market": "Магазин",
+        "premium": "Премиум",
+        "logout": "Выйти",
+        "welcome": "Привет, {{name}}!",
+        "health_investment": "\"Ваше здоровье — лучшая инвестиция.\""
+    },
+    "dashboard": {
+        "hologram_view": "Голограмма",
+        "generate_report": "Создать отчет",
+        "daily_steps": "Шаги за день",
+        "heart_rate": "Пульс",
+        "hydration": "Гидратация",
+        "bpm": "УВМ",
+        "level": "Уровень",
+        "total_points": "ВСЕГО ОЧКОВ"
+    }
+}

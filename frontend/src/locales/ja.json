@@ -1,0 +1,29 @@
+{
+    "common": {
+        "dashboard": "ダッシュボード",
+        "nutrition": "栄養",
+        "exercise": "トレーニング",
+        "challenges": "チャレンジ",
+        "recipes": "レシピ",
+        "academy": "アカデミー",
+        "chat": "AIチャット",
+        "sleep": "睡眠",
+        "mind": "マインド",
+        "community": "コミュニティ",
+        "market": "ストア",
+        "premium": "プレミアム",
+        "logout": "ログアウト",
+        "welcome": "こんにちは、{{name}}さん!",
+        "health_investment": "\"健康は最高の投資です。\""
+    },
+    "dashboard": {
+        "hologram_view": "ホログラム表示",
+        "generate_report": "レポート作成",
+        "daily_steps": "今日の歩数",
+        "heart_rate": "心拍数",
+        "hydration": "水分補給",
+        "bpm": "BPM",
+        "level": "レベル",
+        "total_points": "合計ポイント"
+    }
+}
