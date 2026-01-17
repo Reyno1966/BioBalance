@@ -3,10 +3,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
 
 export const analyzeFoodImage = async (base64Image) => {
     try {
+        if (!genAI) throw new Error('GEMINI_API_KEY is not configured');
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         // Remove prefix if exists (e.g., "data:image/jpeg;base64,")

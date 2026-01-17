@@ -22,6 +22,16 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Health check (at the top to facilitate diagnostics)
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        service: 'BioBalance API',
+        timestamp: new Date().toISOString(),
+        env: process.env.NODE_ENV
+    });
+});
+
 // Middleware
 app.use(helmet());
 app.use(cors());
@@ -44,11 +54,6 @@ app.use('/api/payment', paymentRoutes);
 
 
 
-
-// Health check
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok', service: 'BioBalance API' });
-});
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
