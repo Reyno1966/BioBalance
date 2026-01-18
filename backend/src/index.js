@@ -23,6 +23,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Health check (at the top to facilitate diagnostics)
+app.get('/', (req, res) => {
+    res.json({
+        status: 'online',
+        message: 'BioBalance API Terminal Active',
+        version: '4.0.0'
+    });
+});
+
 app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
