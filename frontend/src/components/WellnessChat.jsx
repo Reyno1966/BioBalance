@@ -62,7 +62,11 @@ const WellnessChat = ({ user }) => {
             setMessages(prev => [...prev, { role: 'assistant', content: response.data.advice }]);
         } catch (err) {
             console.error("Neural processing error:", err);
-            setMessages(prev => [...prev, { role: 'assistant', content: 'CRITICAL_ERROR: Neural bridge failed. Please re-synchronize.' }]);
+            const errorMsg = err.response?.data?.error || err.message;
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: `DIAGNÓSTICO: Error de conexión (${errorMsg}). Verifica que VITE_API_URL y GEMINI_API_KEY estén configuradas en Vercel.`
+            }]);
         } finally {
             setLoading(false);
         }
