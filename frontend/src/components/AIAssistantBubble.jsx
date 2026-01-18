@@ -74,7 +74,11 @@ const AIAssistantBubble = ({ user, context = 'general' }) => {
 
             setChat(prev => [...prev, { role: 'ai', content: res.data.advice }]);
         } catch (err) {
-            setChat(prev => [...prev, { role: 'ai', content: 'Neural Bridge Error. Por favor re-sincroniza.' }]);
+            const errorInfo = err.response?.data?.error || err.message;
+            setChat(prev => [...prev, {
+                role: 'ai',
+                content: `DIAGNÓSTICO_PUENTE: Fallo de conexión (${errorInfo}). Asegúrate de que VITE_API_URL apunte a tu backend en Vercel.`
+            }]);
         } finally {
             setLoading(false);
         }
