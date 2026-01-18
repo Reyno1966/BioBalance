@@ -58,6 +58,7 @@ export const analyzeFoodImage = async (base64Image) => {
 
 export const getWellnessAdvice = async (message, context) => {
     try {
+        if (!genAI) throw new Error('GEMINI_API_KEY no detectada en el puente neuronal.');
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         const personas = {
