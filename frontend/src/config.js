@@ -1,4 +1,4 @@
-const rawUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const rawUrl = import.meta.env.VITE_API_URL || 'https://backend-five-psi-62.vercel.app';
 // Limpiar espacios y barra final si existe
 const API_URL = rawUrl.trim().replace(/\/+$/, "");
 

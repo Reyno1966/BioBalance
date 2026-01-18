@@ -40,9 +40,9 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Middleware
-app.use(helmet());
+// Middleware (CORS primero para evitar bloqueos)
 app.use(cors());
+app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
 
